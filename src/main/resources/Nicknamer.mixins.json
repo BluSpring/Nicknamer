@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "xyz.bluspring.nicknamer.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "TextSerializerAccessor"
+  ],
+  "client": [
+    "PlayerEntityRendererMixin",
+    "PlayerListEntryMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

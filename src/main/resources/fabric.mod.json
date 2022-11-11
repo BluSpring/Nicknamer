@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "nicknamer",
+  "version": "${version}",
+  "name": "Nicknamer",
+  "description": "Allows you to add nicknames to pretty much any player.",
+  "authors": [
+    "BluSpring"
+  ],
+  "contact": {
+    "website": "https://bluspring.xyz"
+  },
+  "license": "MIT",
+  "icon": "assets/nicknamer/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "xyz.bluspring.nicknamer.client.NicknamerClient"
+    ],
+    "main": [
+      "xyz.bluspring.nicknamer.Nicknamer"
+    ]
+  },
+  "mixins": [
+    "Nicknamer.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.9",
+    "fabric": "*",
+    "minecraft": "1.18.1",
+    "fabric-language-kotlin": "1.8.5+kotlin.1.7.20"
+  }
+}
