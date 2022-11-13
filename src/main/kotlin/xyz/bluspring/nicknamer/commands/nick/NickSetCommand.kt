@@ -1,4 +1,4 @@
-package xyz.bluspring.nicknamer.commands
+package xyz.bluspring.nicknamer.commands.nick
 
 import com.mojang.brigadier.Command
 import com.mojang.brigadier.arguments.StringArgumentType
@@ -6,25 +6,18 @@ import com.mojang.brigadier.context.CommandContext
 import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
 import net.minecraft.client.MinecraftClient
 import net.minecraft.text.LiteralText
-import net.minecraft.util.Formatting
 import xyz.bluspring.nicknamer.NicknameManager
 
-class NickToggleCommand<T : FabricClientCommandSource> : Command<T> {
+class NickSetCommand<T : FabricClientCommandSource> : Command<T> {
     override fun run(context: CommandContext<T>): Int {
         val playerName = StringArgumentType.getString(context, "entity")
         val player = MinecraftClient.getInstance().networkHandler!!.playerList.first { it.profile.name == playerName }
 
-        val toggle = NicknameManager.disabled.contains(player.profile.id)
+        val nickname = StringArgumentType.getString(context, "nickname")
 
-        if (toggle)
-            NicknameManager.disabled.remove(player.profile.id)
-        else
-            NicknameManager.disabled.add(player.profile.id)
+        NicknameManager.nicknames[player.profile.id] = LiteralText(nickname)
 
-        context.source.sendFeedback(
-            LiteralText(if (toggle) "Enabled" else "Disabled").formatted(if (toggle) Formatting.GREEN else Formatting.RED)
-                .append(LiteralText(" nicknames for ${player.profile.name}!"))
-        )
+        context.source.sendFeedback(LiteralText("Set nickname for ${player.profile.name} to ").append(NicknameManager.nicknames[player.profile.id]))
         NicknameManager.save()
 
         return 1

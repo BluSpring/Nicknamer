@@ -3,7 +3,7 @@
   "id": "nicknamer",
   "version": "${version}",
   "name": "Nicknamer",
-  "description": "Allows you to add nicknames to pretty much any player.",
+  "description": "Client-side mod for you to add nicknames and pronouns to pretty much any player.",
   "authors": [
     "BluSpring"
   ],
@@ -28,6 +28,6 @@
     "fabricloader": ">=0.14.9",
     "fabric": "*",
     "minecraft": "1.18.1",
-    "fabric-language-kotlin": "1.8.5+kotlin.1.7.20"
+    "fabric-language-kotlin": "*"
   }
 }

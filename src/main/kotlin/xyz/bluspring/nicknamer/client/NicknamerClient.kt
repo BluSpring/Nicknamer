@@ -1,13 +1,14 @@
 package xyz.bluspring.nicknamer.client
 
 import com.mojang.brigadier.arguments.StringArgumentType
-import com.mojang.brigadier.suggestion.Suggestions
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback
-import net.minecraft.command.argument.EntityArgumentType
 import net.minecraft.command.argument.TextArgumentType
-import xyz.bluspring.nicknamer.commands.*
+import xyz.bluspring.nicknamer.PronounManager
+import xyz.bluspring.nicknamer.commands.nick.*
+import xyz.bluspring.nicknamer.commands.pronouns.*
+import xyz.bluspring.nicknamer.commands.pronouns.color.*
+import xyz.bluspring.nicknamer.commands.pronouns.profile.*
 
 class NicknamerClient : ClientModInitializer {
     override fun onInitializeClient() {
@@ -18,7 +19,7 @@ class NicknamerClient : ClientModInitializer {
                 .literal("nickc")
                 .then(
                     ClientCommandManager.argument(
-                        "entity",
+                        "player",
                         StringArgumentType.string()
                     )
                         .suggests { ctx, builder ->
@@ -64,6 +65,173 @@ class NicknamerClient : ClientModInitializer {
                             ClientCommandManager
                                 .literal("toggle")
                                 .executes(NickToggleCommand())
+                        )
+                )
+        )
+
+        dispatcher.register(
+            ClientCommandManager
+                .literal("pronounsc")
+                .then(
+                    ClientCommandManager
+                        .literal("color")
+                        .then(
+                            ClientCommandManager
+                                .argument(
+                                    "pronoun",
+                                    StringArgumentType.string()
+                                )
+                                .suggests { _, builder ->
+                                    builder.apply {
+                                        PronounManager.pronounColors.keys.forEach {
+                                            suggest(it)
+                                        }
+                                    }.buildFuture()
+                                }
+                                .then(
+                                    ClientCommandManager
+                                        .literal("compliments")
+                                        .then(
+                                            ClientCommandManager
+                                                .argument(
+                                                    "complimentingPronoun",
+                                                    StringArgumentType.string()
+                                                )
+                                                .suggests { _, builder ->
+                                                    builder.apply {
+                                                        PronounManager.pronounColors.keys.forEach {
+                                                            suggest(it)
+                                                        }
+                                                    }.buildFuture()
+                                                }
+                                                .executes(PronounsColorComplimentCommand())
+                                        )
+                                )
+                                .then(
+                                    ClientCommandManager
+                                        .literal("set")
+                                        .then(
+                                            ClientCommandManager
+                                                .argument(
+                                                    "hex",
+                                                    StringArgumentType.string()
+                                                )
+                                                .executes(PronounsColorSetCommand())
+                                        )
+                                )
+                                .then(
+                                    ClientCommandManager
+                                        .literal("get")
+                                        .executes(PronounsColorGetCommand())
+                                )
+                        )
+                )
+                .then(
+                    ClientCommandManager
+                        .literal("player")
+                        .then(
+                            ClientCommandManager
+                                .argument(
+                                    "player",
+                                    StringArgumentType.string()
+                                )
+                                .suggests { ctx, builder ->
+                                    builder.apply {
+                                        ctx.source.playerNames.forEach {
+                                            suggest(it)
+                                        }
+                                    }.buildFuture()
+                                }
+                                .then(
+                                    ClientCommandManager
+                                        .literal("get")
+                                        .executes(PronounsGetCommand())
+                                )
+                                .then(
+                                    ClientCommandManager
+                                        .literal("set")
+                                        .then(
+                                            ClientCommandManager
+                                                .argument(
+                                                    "pronouns",
+                                                    StringArgumentType.string()
+                                                )
+                                                .executes(PronounsSetCommand())
+                                        )
+                                )
+                                .then(
+                                    ClientCommandManager
+                                        .literal("profile")
+                                        .then(
+                                            ClientCommandManager
+                                                .literal("set")
+                                                .then(
+                                                    ClientCommandManager
+                                                        .argument(
+                                                            "profile",
+                                                            StringArgumentType.string()
+                                                        )
+                                                        .suggests { ctx, builder ->
+                                                            builder.apply {
+                                                                val playerName = StringArgumentType.getString(ctx, "player")
+                                                                val player = ctx.source.client.networkHandler?.getPlayerListEntry(playerName) ?: return@apply
+
+                                                                val profiles = PronounManager.pronounProfiles[player.profile.id] ?: return@apply
+
+                                                                profiles.profiles.forEach { (profileName, _) ->
+                                                                    suggest(profileName)
+                                                                }
+                                                            }.buildFuture()
+                                                        }
+                                                        .executes(PronounsProfileSetCommand())
+                                                )
+                                                .then(
+                                                    ClientCommandManager
+                                                        .literal("get")
+                                                        .then(
+                                                            ClientCommandManager
+                                                                .argument("profileName", StringArgumentType.string())
+                                                                .executes(PronounsProfileGetNameCommand())
+                                                        )
+                                                        .executes(PronounsProfileGetCommand())
+                                                )
+                                                .then(
+                                                    ClientCommandManager
+                                                        .literal("create")
+                                                        .then(
+                                                            ClientCommandManager
+                                                                .argument("name", StringArgumentType.string())
+                                                                .executes(PronounsProfileCreateCommand())
+                                                        )
+                                                )
+                                                .then(
+                                                    ClientCommandManager
+                                                        .literal("delete")
+                                                        .then(
+                                                            ClientCommandManager
+                                                                .argument("profile", StringArgumentType.string())
+                                                                .suggests { ctx, builder ->
+                                                                    builder.apply {
+                                                                        val playerName = StringArgumentType.getString(ctx, "player")
+                                                                        val player = ctx.source.client.networkHandler?.getPlayerListEntry(playerName) ?: return@apply
+
+                                                                        val profiles = PronounManager.pronounProfiles[player.profile.id] ?: return@apply
+
+                                                                        profiles.profiles.forEach { (profileName, _) ->
+                                                                            suggest(profileName)
+                                                                        }
+                                                                    }.buildFuture()
+                                                                }
+                                                                .executes(PronounsProfileDeleteCommand())
+                                                        )
+                                                )
+                                                .then(
+                                                    ClientCommandManager
+                                                        .literal("list")
+                                                        .executes(PronounsProfileListCommand())
+                                                )
+                                        )
+                                )
                         )
                 )
         )

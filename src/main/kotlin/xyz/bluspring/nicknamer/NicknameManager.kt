@@ -4,6 +4,8 @@ import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import net.fabricmc.loader.api.FabricLoader
+import net.minecraft.client.MinecraftClient
+import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
 import java.io.File
 import java.util.*
@@ -53,5 +55,15 @@ object NicknameManager {
         json.getAsJsonArray("disabled").onEach {
             disabled.add(UUID.fromString(it.asString))
         }
+    }
+
+    fun getOrDefault(id: UUID, name: Text): Text {
+        val nickname = nicknames[id] ?: return name
+
+        return LiteralText("")
+            .append(name)
+            .append(" (")
+            .append(nickname)
+            .append(")")
     }
 }
