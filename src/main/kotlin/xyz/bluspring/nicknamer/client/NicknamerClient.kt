@@ -53,6 +53,11 @@ class NicknamerClient : ClientModInitializer {
                         )
                         .then(
                             ClientCommandManager
+                                .literal("setfromdisplayname")
+                                .executes(NickSetFromDisplayNameCommand())
+                        )
+                        .then(
+                            ClientCommandManager
                                 .literal("get")
                                 .executes(NickGetCommand())
                         )
