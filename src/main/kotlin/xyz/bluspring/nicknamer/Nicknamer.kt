@@ -42,13 +42,15 @@ class Nicknamer : ModInitializer {
                     else
                         newText.add(LiteralText(formedName))
 
+                    formedName = ""
+
                     isInFormatting = !isInFormatting
 
                     return@forEach
                 }
             }
 
-            return Texts.join(newText, null)
+            return Texts.join(newText, LiteralText(""))
         }
 
         fun setText(profile: GameProfile, config: Map<NameFormat, String>, displayName: Text): Text {
