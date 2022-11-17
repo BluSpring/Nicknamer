@@ -7,6 +7,7 @@ import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
+import xyz.bluspring.nicknamer.config.ConfigManager
 import java.io.File
 import java.util.*
 
@@ -55,6 +56,16 @@ object NicknameManager {
         json.getAsJsonArray("disabled").onEach {
             disabled.add(UUID.fromString(it.asString))
         }
+    }
+
+    fun isDisabled(uuid: UUID): Boolean {
+        if (!ConfigManager.config.enabled)
+            return true
+
+        if (!nicknames.contains(uuid))
+            return true
+
+        return disabled.contains(uuid)
     }
 
     fun getOrDefault(id: UUID, name: Text): Text {

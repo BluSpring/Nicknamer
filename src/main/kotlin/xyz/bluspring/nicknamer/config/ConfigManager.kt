@@ -18,8 +18,20 @@ object ConfigManager {
             val json = JsonParser.parseString(file.readText()).asJsonObject
 
             config.enabled = json.get("enabled").asBoolean
-            config.inGameFormat = json.get("inGameFormat").asString
-            config.playerListFormat = json.get("playerListFormat").asString
+            config.inGameFormat = mutableMapOf<NameFormat, String>().apply {
+                val inGameFormat = json.getAsJsonObject("inGameFormat")
+
+                inGameFormat.entrySet().forEach { (key, element) ->
+                    this[NameFormat.valueOf(key)] = element.asString
+                }
+            }
+            config.playerListFormat = mutableMapOf<NameFormat, String>().apply {
+                val playerListFormat = json.getAsJsonObject("playerListFormat")
+
+                playerListFormat.entrySet().forEach { (key, element) ->
+                    this[NameFormat.valueOf(key)] = element.asString
+                }
+            }
             config.displayPronounsBelowUsername = json.get("displayPronounsBelowUsername").asBoolean
         } catch (e: Exception) {
             Nicknamer.logger.error("Failed to load config!")
@@ -35,8 +47,19 @@ object ConfigManager {
             file.writeText(
                 JsonObject().apply {
                     addProperty("enabled", config.enabled)
-                    addProperty("inGameFormat", config.inGameFormat)
-                    addProperty("playerListFormat", config.playerListFormat)
+
+                    val inGameFormat = JsonObject()
+                    config.inGameFormat.forEach { (formatType, format) ->
+                        inGameFormat.addProperty(formatType.name, format)
+                    }
+                    add("inGameFormat", inGameFormat)
+
+                    val playerListFormat = JsonObject()
+                    config.playerListFormat.forEach { (formatType, format) ->
+                        playerListFormat.addProperty(formatType.name, format)
+                    }
+                    add("playerListFormat", playerListFormat)
+
                     addProperty("displayPronounsBelowUsername", config.displayPronounsBelowUsername)
                 }.toString()
             )

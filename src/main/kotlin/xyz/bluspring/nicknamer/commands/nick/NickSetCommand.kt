@@ -10,7 +10,7 @@ import xyz.bluspring.nicknamer.NicknameManager
 
 class NickSetCommand<T : FabricClientCommandSource> : Command<T> {
     override fun run(context: CommandContext<T>): Int {
-        val playerName = StringArgumentType.getString(context, "entity")
+        val playerName = StringArgumentType.getString(context, "player")
         val player = MinecraftClient.getInstance().networkHandler!!.playerList.first { it.profile.name == playerName }
 
         val nickname = StringArgumentType.getString(context, "nickname")

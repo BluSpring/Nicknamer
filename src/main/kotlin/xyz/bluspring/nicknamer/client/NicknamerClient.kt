@@ -159,7 +159,7 @@ class NicknamerClient : ClientModInitializer {
                                             ClientCommandManager
                                                 .argument(
                                                     "pronouns",
-                                                    StringArgumentType.string()
+                                                    StringArgumentType.greedyString()
                                                 )
                                                 .executes(PronounsSetCommand())
                                         )
@@ -190,51 +190,51 @@ class NicknamerClient : ClientModInitializer {
                                                         }
                                                         .executes(PronounsProfileSetCommand())
                                                 )
+                                        )
+                                        .then(
+                                            ClientCommandManager
+                                                .literal("get")
                                                 .then(
                                                     ClientCommandManager
-                                                        .literal("get")
-                                                        .then(
-                                                            ClientCommandManager
-                                                                .argument("profileName", StringArgumentType.string())
-                                                                .executes(PronounsProfileGetNameCommand())
-                                                        )
-                                                        .executes(PronounsProfileGetCommand())
+                                                        .argument("profileName", StringArgumentType.string())
+                                                        .executes(PronounsProfileGetNameCommand())
                                                 )
+                                                .executes(PronounsProfileGetCommand())
+                                        )
+                                        .then(
+                                            ClientCommandManager
+                                                .literal("create")
                                                 .then(
                                                     ClientCommandManager
-                                                        .literal("create")
-                                                        .then(
-                                                            ClientCommandManager
-                                                                .argument("name", StringArgumentType.string())
-                                                                .executes(PronounsProfileCreateCommand())
-                                                        )
+                                                        .argument("name", StringArgumentType.string())
+                                                        .executes(PronounsProfileCreateCommand())
                                                 )
+                                        )
+                                        .then(
+                                            ClientCommandManager
+                                                .literal("delete")
                                                 .then(
                                                     ClientCommandManager
-                                                        .literal("delete")
-                                                        .then(
-                                                            ClientCommandManager
-                                                                .argument("profile", StringArgumentType.string())
-                                                                .suggests { ctx, builder ->
-                                                                    builder.apply {
-                                                                        val playerName = StringArgumentType.getString(ctx, "player")
-                                                                        val player = ctx.source.client.networkHandler?.getPlayerListEntry(playerName) ?: return@apply
+                                                        .argument("profile", StringArgumentType.string())
+                                                        .suggests { ctx, builder ->
+                                                            builder.apply {
+                                                                val playerName = StringArgumentType.getString(ctx, "player")
+                                                                val player = ctx.source.client.networkHandler?.getPlayerListEntry(playerName) ?: return@apply
 
-                                                                        val profiles = PronounManager.pronounProfiles[player.profile.id] ?: return@apply
+                                                                val profiles = PronounManager.pronounProfiles[player.profile.id] ?: return@apply
 
-                                                                        profiles.profiles.forEach { (profileName, _) ->
-                                                                            suggest(profileName)
-                                                                        }
-                                                                    }.buildFuture()
+                                                                profiles.profiles.forEach { (profileName, _) ->
+                                                                    suggest(profileName)
                                                                 }
-                                                                .executes(PronounsProfileDeleteCommand())
-                                                        )
+                                                            }.buildFuture()
+                                                        }
+                                                        .executes(PronounsProfileDeleteCommand())
                                                 )
-                                                .then(
-                                                    ClientCommandManager
-                                                        .literal("list")
-                                                        .executes(PronounsProfileListCommand())
-                                                )
+                                        )
+                                        .then(
+                                            ClientCommandManager
+                                                .literal("list")
+                                                .executes(PronounsProfileListCommand())
                                         )
                                 )
                         )

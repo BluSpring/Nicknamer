@@ -15,7 +15,9 @@ import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 import xyz.bluspring.nicknamer.NicknameManager;
+import xyz.bluspring.nicknamer.Nicknamer;
 import xyz.bluspring.nicknamer.PronounManager;
+import xyz.bluspring.nicknamer.config.ConfigManager;
 
 @Mixin(PlayerEntityRenderer.class)
 public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<AbstractClientPlayerEntity, PlayerEntityModel<AbstractClientPlayerEntity>> {
@@ -43,9 +45,10 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
         var player = (AbstractClientPlayerEntity) args.get(0);
         Text text = args.get(1);
 
-        args.set(1, NicknameManager.INSTANCE.getDisabled()
-                .contains(player.getUuid()) ?
-                text :
-                NicknameManager.INSTANCE.getOrDefault(player.getUuid(), text));
+        args.set(1,
+                NicknameManager.INSTANCE.isDisabled(player.getUuid())
+                        ? text :
+                    Nicknamer.Companion.setText(player.getGameProfile(), ConfigManager.INSTANCE.getConfig().getInGameFormat(), text)
+        );
     }
 }

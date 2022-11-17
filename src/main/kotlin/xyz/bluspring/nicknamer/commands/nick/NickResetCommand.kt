@@ -10,7 +10,7 @@ import xyz.bluspring.nicknamer.NicknameManager
 
 class NickResetCommand<T : FabricClientCommandSource> : Command<T> {
     override fun run(context: CommandContext<T>): Int {
-        val playerName = StringArgumentType.getString(context, "entity")
+        val playerName = StringArgumentType.getString(context, "player")
         val player = MinecraftClient.getInstance().networkHandler!!.playerList.first { it.profile.name == playerName }
 
         NicknameManager.nicknames.remove(player.profile.id)

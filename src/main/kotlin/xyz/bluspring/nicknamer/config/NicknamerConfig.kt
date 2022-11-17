@@ -2,7 +2,20 @@ package xyz.bluspring.nicknamer.config
 
 data class NicknamerConfig(
     var enabled: Boolean = true,
-    var playerListFormat: String = "%username% (%nickname%) - [%pronouns%]",
-    var inGameFormat: String = "%username% (%nickname%)",
+
+    var playerListFormat: MutableMap<NameFormat, String> = mutableMapOf(
+        NameFormat.ALL to "%username% (%nickname%) - [%pronouns%]",
+        NameFormat.NO_NICKNAME to "%username% - [%pronouns%]",
+        NameFormat.NO_PRONOUNS to "%username% (%nickname%)",
+        NameFormat.NONE to "%username%"
+    ),
+
+    var inGameFormat: MutableMap<NameFormat, String> = mutableMapOf(
+        NameFormat.ALL to "%username% (%nickname%)",
+        NameFormat.NO_PRONOUNS to "%username% (%nickname%)",
+        NameFormat.NO_NICKNAME to "%username%",
+        NameFormat.NONE to "%username%",
+    ),
+
     var displayPronounsBelowUsername: Boolean = true
 )

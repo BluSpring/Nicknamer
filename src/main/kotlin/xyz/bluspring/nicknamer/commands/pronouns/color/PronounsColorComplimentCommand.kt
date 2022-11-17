@@ -12,7 +12,7 @@ import xyz.bluspring.nicknamer.PronounManager
 class PronounsColorComplimentCommand<T : FabricClientCommandSource> : Command<T> {
     override fun run(context: CommandContext<T>): Int {
         val pronoun = StringArgumentType.getString(context, "pronoun")
-        val complimenting = StringArgumentType.getString(context, "complimenting")
+        val complimenting = StringArgumentType.getString(context, "complimentingPronoun")
 
         if (!PronounManager.pronounColors.contains(complimenting.lowercase())) {
             context.source.sendError(LiteralText("Compliment pronoun $complimenting is not registered!").formatted(Formatting.RED))

@@ -12,7 +12,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.bluspring.nicknamer.NicknameManager;
+import xyz.bluspring.nicknamer.Nicknamer;
 import xyz.bluspring.nicknamer.PronounManager;
+import xyz.bluspring.nicknamer.config.ConfigManager;
 
 @Mixin(PlayerListEntry.class)
 public abstract class PlayerListEntryMixin {
@@ -20,14 +22,12 @@ public abstract class PlayerListEntryMixin {
 
     @Inject(at = @At("RETURN"), method = "getDisplayName", cancellable = true)
     public void replaceDisplayName(CallbackInfoReturnable<Text> cir) {
-        if (NicknameManager.INSTANCE.getNicknames().containsKey(this.profile.getId()) && !NicknameManager.INSTANCE.getDisabled().contains(this.profile.getId())) {
+        if (!NicknameManager.INSTANCE.isDisabled(this.profile.getId())) {
             cir.setReturnValue(
-                    PronounManager.INSTANCE.getOrDefault(
-                            this.profile.getId(),
-                            NicknameManager.INSTANCE.getOrDefault(
-                                    this.profile.getId(),
-                                    cir.getReturnValue()
-                            )
+                    Nicknamer.Companion.setText(
+                            this.profile,
+                            ConfigManager.INSTANCE.getConfig().getPlayerListFormat(),
+                            cir.getReturnValue() != null ? cir.getReturnValue() : new LiteralText(this.profile.getName())
                     )
             );
         }

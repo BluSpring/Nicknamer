@@ -3,11 +3,16 @@ package xyz.bluspring.nicknamer
 import com.google.gson.JsonParser
 import com.ibm.icu.lang.UCharacter
 import com.ibm.icu.util.ULocale
+import com.mojang.authlib.GameProfile
 import net.fabricmc.api.ModInitializer
 import net.minecraft.client.MinecraftClient
+import net.minecraft.text.LiteralText
+import net.minecraft.text.Text
+import net.minecraft.text.Texts
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import xyz.bluspring.nicknamer.config.ConfigManager
+import xyz.bluspring.nicknamer.config.NameFormat
 import java.net.URL
 import java.util.UUID
 
@@ -22,6 +27,49 @@ class Nicknamer : ModInitializer {
     companion object {
         private val playerCache = mutableMapOf<String, UUID>()
         val logger: Logger = LoggerFactory.getLogger("Nicknamer")
+
+        fun formatStringAsText(format: String, replacements: Map<String, Text>): Text {
+            val newText = mutableListOf<Text>()
+
+            var formedName = ""
+            var isInFormatting = false
+            format.forEach {
+                formedName += it
+
+                if (it == '%') {
+                    if (isInFormatting)
+                        newText.add(replacements[formedName] ?: LiteralText(formedName))
+                    else
+                        newText.add(LiteralText(formedName))
+
+                    isInFormatting = !isInFormatting
+
+                    return@forEach
+                }
+            }
+
+            return Texts.join(newText, null)
+        }
+
+        fun setText(profile: GameProfile, config: Map<NameFormat, String>, displayName: Text): Text {
+            val hasPronouns = PronounManager.pronouns.contains(profile.id)
+            val hasNickname = !NicknameManager.isDisabled(profile.id)
+
+            val nameFormat = NameFormat.getNameFormat(hasNickname, hasPronouns)
+
+            return formatStringAsText(
+                config[nameFormat] ?: "%username%",
+                mutableMapOf(
+                    "%username%" to displayName
+                ).apply {
+                    if (hasNickname)
+                        this["%nickname%"] = NicknameManager.nicknames[profile.id]!!
+
+                    if (hasPronouns)
+                        this["%pronouns%"] = PronounManager.getPronounsText(profile.id)
+                }
+            )
+        }
 
         fun toTitleCase(str: String): String {
             return UCharacter.toTitleCase(ULocale.getDefault(), str, null, 0)
