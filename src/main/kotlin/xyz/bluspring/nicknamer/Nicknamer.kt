@@ -34,21 +34,23 @@ class Nicknamer : ModInitializer {
             var formedName = ""
             var isInFormatting = false
             format.forEach {
-                formedName += it
-
                 if (it == '%') {
-                    if (isInFormatting)
+                    if (isInFormatting) {
+                        formedName += it
                         newText.add(replacements[formedName] ?: LiteralText(formedName))
-                    else
+                        formedName = ""
+                    } else {
                         newText.add(LiteralText(formedName))
-
-                    formedName = ""
+                        formedName = "$it"
+                    }
 
                     isInFormatting = !isInFormatting
-
-                    return@forEach
-                }
+                } else
+                    formedName += it
             }
+
+            // Add a missing bit that gets missed
+            newText.add(LiteralText(formedName))
 
             return Texts.join(newText, LiteralText(""))
         }
