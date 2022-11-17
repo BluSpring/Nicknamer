@@ -21,7 +21,7 @@ class PronounsProfileGetNameCommand<T : FabricClientCommandSource> : Command<T> 
 
         val profileName = StringArgumentType.getString(context, "profile")
 
-        if (!PronounManager.pronounProfiles.contains(playerUUID) || PronounManager.pronounProfiles[playerUUID]!!.profiles.contains(profileName)) {
+        if (!PronounManager.pronounProfiles.contains(playerUUID) || !PronounManager.pronounProfiles[playerUUID]!!.profiles.contains(profileName)) {
             context.source.sendError(LiteralText("Pronouns profile $profileName does not exist!"))
 
             return 0

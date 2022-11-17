@@ -196,7 +196,7 @@ class NicknamerClient : ClientModInitializer {
                                                 .literal("get")
                                                 .then(
                                                     ClientCommandManager
-                                                        .argument("profileName", StringArgumentType.string())
+                                                        .argument("profile", StringArgumentType.string())
                                                         .executes(PronounsProfileGetNameCommand())
                                                 )
                                                 .executes(PronounsProfileGetCommand())
@@ -206,7 +206,7 @@ class NicknamerClient : ClientModInitializer {
                                                 .literal("create")
                                                 .then(
                                                     ClientCommandManager
-                                                        .argument("name", StringArgumentType.string())
+                                                        .argument("profile", StringArgumentType.string())
                                                         .executes(PronounsProfileCreateCommand())
                                                 )
                                         )
