@@ -19,6 +19,15 @@ repositories {
         url = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
         mavenContent { snapshotsOnly() }
     }
+    maven {
+        name 'Gegy'
+        url 'https://maven.gegy.dev'
+    }
+    maven {
+        url 'https://maven.terraformersmc.com/'
+    }
+
+    maven { url "https://maven.shedaniel.me/" }
 }
 
 dependencies {
@@ -29,9 +38,12 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-    modImplementation "net.fabricmc:fabric-language-kotlin:1.8.5+kotlin.1.7.20"
+    modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
+    modImplementation "com.terraformersmc:modmenu:3.0.1"
 
-    modImplementation include("net.kyori:adventure-text-minimessage:4.11.0")
+    modApi("me.shedaniel.cloth:cloth-config-fabric:6.4.90") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
 }
 
 processResources {

@@ -5,17 +5,23 @@ import com.ibm.icu.lang.UCharacter
 import com.ibm.icu.util.ULocale
 import net.fabricmc.api.ModInitializer
 import net.minecraft.client.MinecraftClient
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import xyz.bluspring.nicknamer.config.ConfigManager
 import java.net.URL
 import java.util.UUID
 
 class Nicknamer : ModInitializer {
     override fun onInitialize() {
+        ConfigManager.load()
+
         NicknameManager.load()
         PronounManager.load()
     }
 
     companion object {
         private val playerCache = mutableMapOf<String, UUID>()
+        val logger: Logger = LoggerFactory.getLogger("Nicknamer")
 
         fun toTitleCase(str: String): String {
             return UCharacter.toTitleCase(ULocale.getDefault(), str, null, 0)

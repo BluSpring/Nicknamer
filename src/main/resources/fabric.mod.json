@@ -19,6 +19,9 @@
     ],
     "main": [
       "xyz.bluspring.nicknamer.Nicknamer"
+    ],
+    "modmenu": [
+      "xyz.bluspring.nicknamer.integrations.NicknamerModMenuIntegration"
     ]
   },
   "mixins": [
@@ -28,6 +31,7 @@
     "fabricloader": ">=0.14.9",
     "fabric": "*",
     "minecraft": "1.18.1",
-    "fabric-language-kotlin": "*"
+    "fabric-language-kotlin": "*",
+    "cloth-config": ">=6.4.90"
   }
 }
