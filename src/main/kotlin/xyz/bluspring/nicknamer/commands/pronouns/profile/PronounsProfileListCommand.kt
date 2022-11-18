@@ -3,8 +3,8 @@ package xyz.bluspring.nicknamer.commands.pronouns.profile
 import com.mojang.brigadier.Command
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
-import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
-import net.minecraft.text.LiteralText
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
+import net.minecraft.text.Text
 import xyz.bluspring.nicknamer.Nicknamer
 import xyz.bluspring.nicknamer.config.pronouns.PronounManager
 
@@ -14,29 +14,29 @@ class PronounsProfileListCommand<T : FabricClientCommandSource> : Command<T> {
         val playerUUID = Nicknamer.getPlayerUUID(playerName)
 
         if (playerUUID == null) {
-            context.source.sendError(LiteralText("Could not find player $playerName!"))
+            context.source.sendError(Text.literal("Could not find player $playerName!"))
 
             return 0
         }
 
         if (!PronounManager.pronounProfiles.contains(playerUUID)) {
-            context.source.sendError(LiteralText("Player $playerName does not have any pronouns profiles!"))
+            context.source.sendError(Text.literal("Player $playerName does not have any pronouns profiles!"))
 
             return 0
         }
 
         val profiles = PronounManager.pronounProfiles[playerUUID]!!
 
-        context.source.sendFeedback(LiteralText("$playerName has the pronouns profiles:"))
+        context.source.sendFeedback(Text.literal("$playerName has the pronouns profiles:"))
         profiles.profiles.forEach { (profileName, pronouns) ->
             context.source.sendFeedback(
-                LiteralText("- ")
+                Text.literal("- ")
                     .append(profileName)
                     .append(" : ")
                     .append(PronounManager.getPronounsText(pronouns))
             )
         }
-        context.source.sendFeedback(LiteralText("Currently selected profile: ${profiles.currentProfile}"))
+        context.source.sendFeedback(Text.literal("Currently selected profile: ${profiles.currentProfile}"))
 
         return 1
     }

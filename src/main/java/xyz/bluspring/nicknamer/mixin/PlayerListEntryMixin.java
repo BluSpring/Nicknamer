@@ -2,7 +2,6 @@ package xyz.bluspring.nicknamer.mixin;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
@@ -36,7 +35,7 @@ public abstract class PlayerListEntryMixin implements ExtendedPlayerListEntry {
                     Nicknamer.Companion.setText(
                             this.profile,
                             ConfigManager.INSTANCE.getConfig().getPlayerListFormat(),
-                            cir.getReturnValue() != null ? cir.getReturnValue() : new LiteralText(this.profile.getName())
+                            cir.getReturnValue() != null ? cir.getReturnValue() : Text.literal(this.profile.getName())
                     )
             );
         }

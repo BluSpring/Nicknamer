@@ -6,6 +6,7 @@ plugins {
 
 version = project.mod_version
 group = project.maven_group
+cloth_config_version = project.cloth_config_version
 
 repositories {
     // Add repositories to retrieve artifacts from in here.
@@ -39,9 +40,9 @@ dependencies {
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
     modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
-    modImplementation "com.terraformersmc:modmenu:3.0.1"
+    modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
 
-    modApi("me.shedaniel.cloth:cloth-config-fabric:6.4.90") {
+    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
         exclude(group: "net.fabricmc.fabric-api")
     }
 }

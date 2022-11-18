@@ -8,7 +8,6 @@ import com.mojang.util.UUIDTypeAdapter
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
-import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
 import net.minecraft.text.Texts
 import org.slf4j.Logger
@@ -45,10 +44,10 @@ class Nicknamer : ModInitializer {
                 if (it == '%') {
                     if (isInFormatting) {
                         formedName += it
-                        newText.add(replacements[formedName] ?: LiteralText(formedName))
+                        newText.add(replacements[formedName] ?: Text.literal(formedName))
                         formedName = ""
                     } else {
-                        newText.add(LiteralText(formedName))
+                        newText.add(Text.literal(formedName))
                         formedName = "$it"
                     }
 
@@ -58,9 +57,9 @@ class Nicknamer : ModInitializer {
             }
 
             // Add a missing bit that gets missed
-            newText.add(LiteralText(formedName))
+            newText.add(Text.literal(formedName))
 
-            return Texts.join(newText, LiteralText(""))
+            return Texts.join(newText, Text.literal(""))
         }
 
         fun setText(profile: GameProfile, config: Map<NameFormat, String>, displayName: Text): Text {

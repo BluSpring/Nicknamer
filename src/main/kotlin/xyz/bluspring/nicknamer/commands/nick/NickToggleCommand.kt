@@ -3,9 +3,8 @@ package xyz.bluspring.nicknamer.commands.nick
 import com.mojang.brigadier.Command
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
-import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
-import net.minecraft.client.MinecraftClient
-import net.minecraft.text.LiteralText
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
+import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import xyz.bluspring.nicknamer.config.nickname.NicknameManager
 import xyz.bluspring.nicknamer.players.PlayerHelper
@@ -23,8 +22,8 @@ class NickToggleCommand<T : FabricClientCommandSource> : Command<T> {
             NicknameManager.disabled.add(player.profile.id)
 
         context.source.sendFeedback(
-            LiteralText(if (toggle) "Enabled" else "Disabled").formatted(if (toggle) Formatting.GREEN else Formatting.RED)
-                .append(LiteralText(" nicknames for ${player.profile.name}!"))
+            Text.literal(if (toggle) "Enabled" else "Disabled").formatted(if (toggle) Formatting.GREEN else Formatting.RED)
+                .append(Text.literal(" nicknames for ${player.profile.name}!"))
         )
         NicknameManager.save()
 

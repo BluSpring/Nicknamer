@@ -3,8 +3,6 @@ package xyz.bluspring.nicknamer.config.pronouns
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import net.fabricmc.loader.api.FabricLoader
-import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
 import net.minecraft.text.TextColor
 import net.minecraft.text.Texts
@@ -112,7 +110,7 @@ object PronounManager {
     fun getOrDefault(id: UUID, name: Text): Text {
         val pronounList = pronouns[id] ?: return name
 
-        return LiteralText("")
+        return Text.literal("")
             .append(name)
             .append(" [")
             .append(
@@ -122,20 +120,20 @@ object PronounManager {
     }
 
     fun getPronounsText(id: UUID): Text {
-        val pronounList = pronouns[id] ?: return LiteralText.EMPTY
+        val pronounList = pronouns[id] ?: return Text.empty()
         return getPronounsText(pronounList)
     }
 
     fun getPronounsText(list: List<String>): Text {
         return Texts.join(
             list.map { pronoun ->
-                LiteralText(
+                Text.literal(
                     Nicknamer.toTitleCase(pronoun)
                 ).styled {
                     it.withColor(getOrCreatePronounColor(pronoun))
                 }
             },
-            LiteralText("/")
+            Text.literal("/")
         )
     }
 

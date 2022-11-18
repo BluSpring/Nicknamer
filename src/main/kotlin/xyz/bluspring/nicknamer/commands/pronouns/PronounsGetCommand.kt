@@ -3,8 +3,8 @@ package xyz.bluspring.nicknamer.commands.pronouns
 import com.mojang.brigadier.Command
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
-import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
-import net.minecraft.text.LiteralText
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
+import net.minecraft.text.Text
 import xyz.bluspring.nicknamer.Nicknamer
 import xyz.bluspring.nicknamer.config.pronouns.PronounManager
 
@@ -14,13 +14,13 @@ class PronounsGetCommand<T : FabricClientCommandSource> : Command<T> {
         val playerUUID = Nicknamer.getPlayerUUID(playerName)
 
         if (playerUUID == null) {
-            context.source.sendError(LiteralText("Could not find player $playerName!"))
+            context.source.sendError(Text.literal("Could not find player $playerName!"))
 
             return 0
         }
 
         context.source.sendFeedback(
-            LiteralText("$playerName's pronouns are ")
+            Text.literal("$playerName's pronouns are ")
                 .append(PronounManager.getPronounsText(playerUUID))
         )
 

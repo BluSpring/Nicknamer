@@ -3,8 +3,6 @@ package xyz.bluspring.nicknamer.config.nickname
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import net.fabricmc.loader.api.FabricLoader
-import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
 import xyz.bluspring.nicknamer.Nicknamer
 import xyz.bluspring.nicknamer.config.ConfigManager
@@ -72,7 +70,7 @@ object NicknameManager/*(val pathName: String)*/ {
     fun getOrDefault(id: UUID, name: Text): Text {
         val nickname = nicknames[id] ?: return name
 
-        return LiteralText("")
+        return Text.literal("")
             .append(name)
             .append(" (")
             .append(nickname)

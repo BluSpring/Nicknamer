@@ -3,8 +3,8 @@ package xyz.bluspring.nicknamer.commands.pronouns.profile
 import com.mojang.brigadier.Command
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
-import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
-import net.minecraft.text.LiteralText
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
+import net.minecraft.text.Text
 import xyz.bluspring.nicknamer.Nicknamer
 import xyz.bluspring.nicknamer.config.pronouns.PronounManager
 import xyz.bluspring.nicknamer.config.pronouns.PronounProfiles
@@ -15,7 +15,7 @@ class PronounsProfileCreateCommand<T : FabricClientCommandSource> : Command<T> {
         val playerUUID = Nicknamer.getPlayerUUID(playerName)
 
         if (playerUUID == null) {
-            context.source.sendError(LiteralText("Could not find player $playerName!"))
+            context.source.sendError(Text.literal("Could not find player $playerName!"))
 
             return 0
         }
@@ -29,7 +29,7 @@ class PronounsProfileCreateCommand<T : FabricClientCommandSource> : Command<T> {
         PronounManager.pronounProfiles[playerUUID] = profiles
 
         context.source.sendFeedback(
-            LiteralText("Created pronouns profile $profileName. It has been auto-selected, and run \"/pronounsc set <pronouns>\" to set the pronouns for the profile.")
+            Text.literal("Created pronouns profile $profileName. It has been auto-selected, and run \"/pronounsc set <pronouns>\" to set the pronouns for the profile.")
         )
 
         return 1

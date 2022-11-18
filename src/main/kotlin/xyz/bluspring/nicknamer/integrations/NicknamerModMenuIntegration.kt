@@ -3,7 +3,7 @@ package xyz.bluspring.nicknamer.integrations
 import com.terraformersmc.modmenu.api.ConfigScreenFactory
 import com.terraformersmc.modmenu.api.ModMenuApi
 import me.shedaniel.clothconfig2.api.ConfigBuilder
-import net.minecraft.text.LiteralText
+import net.minecraft.text.Text
 import xyz.bluspring.nicknamer.config.ConfigManager
 
 class NicknamerModMenuIntegration : ModMenuApi {
@@ -11,17 +11,17 @@ class NicknamerModMenuIntegration : ModMenuApi {
         return ConfigScreenFactory {
             ConfigBuilder.create().apply {
                 parentScreen = it
-                title = LiteralText("Nicknamer Config")
+                title = Text.literal("Nicknamer Config")
 
                 setSavingRunnable {
                     ConfigManager.save()
                 }
 
-                getOrCreateCategory(LiteralText("General")).apply {
+                getOrCreateCategory(Text.literal("General")).apply {
                     addEntry(
                         entryBuilder()
                             .startBooleanToggle(
-                                LiteralText("Is enabled?"),
+                                Text.literal("Is enabled?"),
                                 ConfigManager.config.enabled
                             )
                             .setDefaultValue(false)
@@ -34,7 +34,7 @@ class NicknamerModMenuIntegration : ModMenuApi {
                     addEntry(
                         entryBuilder()
                             .startBooleanToggle(
-                                LiteralText("Display pronouns below nameplate?"),
+                                Text.literal("Display pronouns below nameplate?"),
                                 ConfigManager.config.displayPronounsBelowUsername
                             )
                             .setDefaultValue(true)
@@ -45,20 +45,20 @@ class NicknamerModMenuIntegration : ModMenuApi {
                     )
                 }
 
-                getOrCreateCategory(LiteralText("In-game Name Format")).apply {
+                getOrCreateCategory(Text.literal("In-game Name Format")).apply {
                     setDescription(
                         listOf(
-                            LiteralText("Sets what the name will look like on the nameplate."),
-                            LiteralText("%username% - Username"),
-                            LiteralText("%nickname% - Nickname"),
-                            LiteralText("%pronouns% - Pronouns")
+                            Text.literal("Sets what the name will look like on the nameplate."),
+                            Text.literal("%username% - Username"),
+                            Text.literal("%nickname% - Nickname"),
+                            Text.literal("%pronouns% - Pronouns")
                         ).toTypedArray()
                     )
 
                     ConfigManager.config.inGameFormat.forEach { (nameFormat, format) ->
                         addEntry(
                             entryBuilder()
-                                .startTextField(LiteralText(nameFormat.displayName), format)
+                                .startTextField(Text.literal(nameFormat.displayName), format)
                                 .setDefaultValue("%username% (%nickname%)")
                                 .setSaveConsumer {
                                     ConfigManager.config.inGameFormat[nameFormat] = it
@@ -68,20 +68,20 @@ class NicknamerModMenuIntegration : ModMenuApi {
                     }
                 }
 
-                getOrCreateCategory(LiteralText("Player List Name Format")).apply {
+                getOrCreateCategory(Text.literal("Player List Name Format")).apply {
                     setDescription(
                         listOf(
-                            LiteralText("Sets what the name will look like on the player list."),
-                            LiteralText("%username% - Username"),
-                            LiteralText("%nickname% - Nickname"),
-                            LiteralText("%pronouns% - Pronouns")
+                            Text.literal("Sets what the name will look like on the player list."),
+                            Text.literal("%username% - Username"),
+                            Text.literal("%nickname% - Nickname"),
+                            Text.literal("%pronouns% - Pronouns")
                         ).toTypedArray()
                     )
 
                     ConfigManager.config.playerListFormat.forEach { (nameFormat, format) ->
                         addEntry(
                             entryBuilder()
-                                .startTextField(LiteralText(nameFormat.displayName), format)
+                                .startTextField(Text.literal(nameFormat.displayName), format)
                                 .setDefaultValue("%username% (%nickname%) - [%pronouns%]")
                                 .setSaveConsumer {
                                     ConfigManager.config.playerListFormat[nameFormat] = it

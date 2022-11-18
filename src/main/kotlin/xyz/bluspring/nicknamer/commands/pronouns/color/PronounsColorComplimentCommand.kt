@@ -3,8 +3,8 @@ package xyz.bluspring.nicknamer.commands.pronouns.color
 import com.mojang.brigadier.Command
 import com.mojang.brigadier.arguments.StringArgumentType
 import com.mojang.brigadier.context.CommandContext
-import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
-import net.minecraft.text.LiteralText
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
+import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 import xyz.bluspring.nicknamer.Nicknamer
 import xyz.bluspring.nicknamer.config.pronouns.PronounManager
@@ -15,7 +15,7 @@ class PronounsColorComplimentCommand<T : FabricClientCommandSource> : Command<T>
         val complimenting = StringArgumentType.getString(context, "complimentingPronoun")
 
         if (!PronounManager.pronounColors.contains(complimenting.lowercase())) {
-            context.source.sendError(LiteralText("Compliment pronoun $complimenting is not registered!").formatted(Formatting.RED))
+            context.source.sendError(Text.literal("Compliment pronoun $complimenting is not registered!").formatted(Formatting.RED))
 
             return 0
         }
@@ -25,9 +25,9 @@ class PronounsColorComplimentCommand<T : FabricClientCommandSource> : Command<T>
         PronounManager.pronounColors[pronoun.lowercase()] = color
 
         context.source.sendFeedback(
-            LiteralText("Set pronoun color to ")
+            Text.literal("Set pronoun color to ")
                 .append(
-                    LiteralText(
+                    Text.literal(
                         Nicknamer.toTitleCase(pronoun.lowercase())
                     ).styled {
                         it.withColor(color)
