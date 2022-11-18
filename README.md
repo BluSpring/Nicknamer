@@ -4,6 +4,9 @@
 
 A client-side mod that allows you to add nicknames and pronouns to pretty much any player.
 
+## Downloads
+[Modrinth](https://modrinth.com/mod/nicknamer)
+
 ## Required Mods
 [Fabric API](https://modrinth.com/mod/fabric-api), 
 [Fabric Language Kotlin](https://modrinth.com/mod/fabric-language-kotlin),
