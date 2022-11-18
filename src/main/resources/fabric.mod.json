@@ -10,7 +10,7 @@
   "contact": {
     "website": "https://bluspring.xyz"
   },
-  "license": "MIT",
+  "license": "Unlicense",
   "icon": "assets/nicknamer/icon.png",
   "environment": "client",
   "entrypoints": {
