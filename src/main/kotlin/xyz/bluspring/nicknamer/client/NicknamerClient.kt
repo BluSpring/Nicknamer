@@ -22,8 +22,6 @@ class NicknamerClient : ClientModInitializer {
                 handler.world.server?.singlePlayerName ?: "unknown"
             else
                 handler.connection.address.toString()
-
-            Nicknamer.nicknameManager = NicknameManager(name)
         }
     }
 
