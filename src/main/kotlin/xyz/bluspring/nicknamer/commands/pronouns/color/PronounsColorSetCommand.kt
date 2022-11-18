@@ -13,7 +13,7 @@ import xyz.bluspring.nicknamer.config.pronouns.PronounManager
 class PronounsColorSetCommand<T : FabricClientCommandSource> : Command<T> {
     override fun run(context: CommandContext<T>): Int {
         val pronoun = StringArgumentType.getString(context, "pronoun")
-        val color = StringArgumentType.getString(context, "color")
+        val color = StringArgumentType.getString(context, "hex")
 
         val textColor = TextColor.parse(color)
 
