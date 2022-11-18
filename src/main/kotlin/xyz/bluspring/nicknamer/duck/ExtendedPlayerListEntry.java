@@ -1,4 +1,4 @@
-package xyz.bluspring.nicknamer.mixin;
+package xyz.bluspring.nicknamer.duck;
 
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;

@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.bluspring.nicknamer.Nicknamer;
 import xyz.bluspring.nicknamer.config.ConfigManager;
 import xyz.bluspring.nicknamer.config.nickname.NicknameManager;
+import xyz.bluspring.nicknamer.duck.ExtendedPlayerListEntry;
 
 @Mixin(PlayerListEntry.class)
 public abstract class PlayerListEntryMixin implements ExtendedPlayerListEntry {

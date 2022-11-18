@@ -7,7 +7,7 @@ import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
 import net.minecraft.client.MinecraftClient
 import net.minecraft.text.LiteralText
 import xyz.bluspring.nicknamer.config.nickname.NicknameManager
-import xyz.bluspring.nicknamer.mixin.ExtendedPlayerListEntry
+import xyz.bluspring.nicknamer.duck.ExtendedPlayerListEntry
 
 class NickSetFromDisplayNameCommand<T : FabricClientCommandSource> : Command<T> {
     override fun run(context: CommandContext<T>): Int {

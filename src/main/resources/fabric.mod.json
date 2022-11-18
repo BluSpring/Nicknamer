@@ -33,10 +33,5 @@
     "minecraft": "1.18.1",
     "fabric-language-kotlin": "*",
     "cloth-config": ">=6.4.90"
-  },
-  "custom": {
-    "loom:injected_interfaces": {
-      "net/minecraft/class_640": ["xyz/bluspring/nicknamer/mixin/ExtendedPlayerListEntry"]
-    }
   }
 }
