@@ -8,13 +8,14 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.text.LiteralText
 import xyz.bluspring.nicknamer.config.nickname.NicknameManager
 import xyz.bluspring.nicknamer.duck.ExtendedPlayerListEntry
+import xyz.bluspring.nicknamer.players.PlayerHelper
 
 class NickSetFromDisplayNameCommand<T : FabricClientCommandSource> : Command<T> {
     override fun run(context: CommandContext<T>): Int {
         val playerName = StringArgumentType.getString(context, "player")
-        val player = MinecraftClient.getInstance().networkHandler!!.playerList.first { it.profile.name == playerName }
+        val player = PlayerHelper.getPlayer(playerName)
 
-        NicknameManager.nicknames[player.profile.id] = (player as ExtendedPlayerListEntry).originalDisplayName ?: LiteralText(player.profile.name)
+        NicknameManager.nicknames[player.profile.id] = player.originalDisplayName ?: LiteralText(player.profile.name)
 
         context.source.sendFeedback(LiteralText("Set nickname for ${player.profile.name} to ").append(NicknameManager.nicknames[player.profile.id]))
         NicknameManager.save()

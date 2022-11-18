@@ -4,6 +4,7 @@ import com.google.gson.JsonParser
 import com.ibm.icu.lang.UCharacter
 import com.ibm.icu.util.ULocale
 import com.mojang.authlib.GameProfile
+import com.mojang.util.UUIDTypeAdapter
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
@@ -96,15 +97,11 @@ class Nicknamer : ModInitializer {
                     val response = URL("https://api.mojang.com/users/profiles/minecraft/$name").readText()
                     val json = JsonParser.parseString(response).asJsonObject
 
-                    val uuid = UUID.fromString(
-                        json.get("id").asString.replaceFirst(
-                            "(\\p{XDigit}{8})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}+)",
-                            "$1-$2-$3-$4-$5"
-                        )
-                    )
+                    val uuid = UUIDTypeAdapter.fromString(json.get("id").asString)
 
                     uuid
-                } catch (_: Exception) {
+                } catch (e: Exception) {
+                    e.printStackTrace()
                     null
                 }
 

@@ -8,11 +8,12 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
 import xyz.bluspring.nicknamer.config.nickname.NicknameManager
+import xyz.bluspring.nicknamer.players.PlayerHelper
 
 class NickSetRawCommand<T : FabricClientCommandSource> : Command<T> {
     override fun run(context: CommandContext<T>): Int {
         val playerName = StringArgumentType.getString(context, "player")
-        val player = MinecraftClient.getInstance().networkHandler!!.playerList.first { it.profile.name == playerName }
+        val player = PlayerHelper.getPlayer(playerName)
 
         val nickname = context.getArgument("nickname", Text::class.java)
 
