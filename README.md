@@ -20,4 +20,4 @@ A client-side mod that allows you to add nicknames and pronouns to pretty much a
 ## Commands
 Will be worked on soon.
 The current commands that are available can be autocompleted
-by typing `/nicknamec` and `/pronounsc`.
+by typing `/nickc` and `/pronounsc`.
