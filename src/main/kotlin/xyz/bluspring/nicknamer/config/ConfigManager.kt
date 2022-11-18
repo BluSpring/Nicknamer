@@ -2,13 +2,12 @@ package xyz.bluspring.nicknamer.config
 
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import net.fabricmc.loader.api.FabricLoader
 import xyz.bluspring.nicknamer.Nicknamer
 import java.io.File
 
 object ConfigManager {
     val config = NicknamerConfig()
-    private val file = File(FabricLoader.getInstance().configDir.toFile(), "nicknamer_config.json")
+    private val file = File(Nicknamer.configDir, "config.json")
 
     fun load() {
         if (!file.exists())
@@ -41,8 +40,11 @@ object ConfigManager {
 
     fun save() {
         try {
-            if (!file.exists())
+            if (!file.exists()) {
+                if (!Nicknamer.configDir.exists())
+                    Nicknamer.configDir.mkdirs()
                 file.createNewFile()
+            }
 
             file.writeText(
                 JsonObject().apply {

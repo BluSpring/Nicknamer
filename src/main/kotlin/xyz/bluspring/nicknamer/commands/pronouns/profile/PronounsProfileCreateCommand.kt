@@ -6,8 +6,8 @@ import com.mojang.brigadier.context.CommandContext
 import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
 import net.minecraft.text.LiteralText
 import xyz.bluspring.nicknamer.Nicknamer
-import xyz.bluspring.nicknamer.PronounManager
-import xyz.bluspring.nicknamer.PronounProfiles
+import xyz.bluspring.nicknamer.config.pronouns.PronounManager
+import xyz.bluspring.nicknamer.config.pronouns.PronounProfiles
 
 class PronounsProfileCreateCommand<T : FabricClientCommandSource> : Command<T> {
     override fun run(context: CommandContext<T>): Int {

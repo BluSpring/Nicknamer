@@ -1,25 +1,26 @@
-package xyz.bluspring.nicknamer
+package xyz.bluspring.nicknamer.config.nickname
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
 import net.fabricmc.loader.api.FabricLoader
-import net.minecraft.client.MinecraftClient
 import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
+import xyz.bluspring.nicknamer.Nicknamer
 import xyz.bluspring.nicknamer.config.ConfigManager
 import java.io.File
 import java.util.*
 
-object NicknameManager {
-    private val file = File(FabricLoader.getInstance().configDir.toFile(), "nicknamer.json")
+object NicknameManager/*(val pathName: String)*/ {
+    //private val file = File(FabricLoader.getInstance().configDir.toFile(), "nicknamer/$pathName/nicknames.json")
+    private val file = File(Nicknamer.configDir, "nicknames.json")
     val nicknames = mutableMapOf<UUID, Text>()
     val disabled = mutableSetOf<UUID>()
 
     fun save() {
         if (!file.exists()) {
-            if (!FabricLoader.getInstance().configDir.toFile().exists())
-                FabricLoader.getInstance().configDir.toFile().mkdirs()
+            if (!Nicknamer.configDir.exists())
+                Nicknamer.configDir.mkdirs()
 
             file.createNewFile()
         }

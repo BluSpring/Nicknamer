@@ -8,8 +8,7 @@ import net.minecraft.text.LiteralText
 import net.minecraft.text.TextColor
 import net.minecraft.util.Formatting
 import xyz.bluspring.nicknamer.Nicknamer
-import xyz.bluspring.nicknamer.PronounManager
-import java.awt.Color
+import xyz.bluspring.nicknamer.config.pronouns.PronounManager
 
 class PronounsColorSetCommand<T : FabricClientCommandSource> : Command<T> {
     override fun run(context: CommandContext<T>): Int {

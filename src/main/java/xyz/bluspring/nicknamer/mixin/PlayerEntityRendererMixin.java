@@ -14,9 +14,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
-import xyz.bluspring.nicknamer.NicknameManager;
 import xyz.bluspring.nicknamer.Nicknamer;
-import xyz.bluspring.nicknamer.PronounManager;
+import xyz.bluspring.nicknamer.config.nickname.NicknameManager;
+import xyz.bluspring.nicknamer.config.pronouns.PronounManager;
 import xyz.bluspring.nicknamer.config.ConfigManager;
 
 @Mixin(PlayerEntityRenderer.class)

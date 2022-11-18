@@ -5,6 +5,7 @@ import com.ibm.icu.lang.UCharacter
 import com.ibm.icu.util.ULocale
 import com.mojang.authlib.GameProfile
 import net.fabricmc.api.ModInitializer
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
 import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
@@ -13,13 +14,18 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import xyz.bluspring.nicknamer.config.ConfigManager
 import xyz.bluspring.nicknamer.config.NameFormat
+import xyz.bluspring.nicknamer.config.nickname.NicknameManager
+import xyz.bluspring.nicknamer.config.pronouns.PronounManager
+import java.io.File
 import java.net.URL
 import java.util.UUID
 
 class Nicknamer : ModInitializer {
     override fun onInitialize() {
-        ConfigManager.load()
+        if (!configDir.exists())
+            File(configDir, "nicknamer").mkdirs()
 
+        ConfigManager.load()
         NicknameManager.load()
         PronounManager.load()
     }
@@ -27,6 +33,7 @@ class Nicknamer : ModInitializer {
     companion object {
         private val playerCache = mutableMapOf<String, UUID>()
         val logger: Logger = LoggerFactory.getLogger("Nicknamer")
+        val configDir = File(FabricLoader.getInstance().configDir.toFile(), "nicknamer")
 
         fun formatStringAsText(format: String, replacements: Map<String, Text>): Text {
             val newText = mutableListOf<Text>()

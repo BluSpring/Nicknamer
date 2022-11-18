@@ -3,15 +3,31 @@ package xyz.bluspring.nicknamer.client
 import com.mojang.brigadier.arguments.StringArgumentType
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.command.v1.ClientCommandManager
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
 import net.minecraft.command.argument.TextArgumentType
-import xyz.bluspring.nicknamer.PronounManager
+import xyz.bluspring.nicknamer.Nicknamer
+import xyz.bluspring.nicknamer.config.pronouns.PronounManager
 import xyz.bluspring.nicknamer.commands.nick.*
 import xyz.bluspring.nicknamer.commands.pronouns.*
 import xyz.bluspring.nicknamer.commands.pronouns.color.*
 import xyz.bluspring.nicknamer.commands.pronouns.profile.*
+import xyz.bluspring.nicknamer.config.nickname.NicknameManager
 
 class NicknamerClient : ClientModInitializer {
     override fun onInitializeClient() {
+        registerCommands()
+
+        ClientPlayConnectionEvents.JOIN.register { handler, _, client ->
+            val name: String = if (handler.connection.isLocal)
+                handler.world.server?.singlePlayerName ?: "unknown"
+            else
+                handler.connection.address.toString()
+
+            Nicknamer.nicknameManager = NicknameManager(name)
+        }
+    }
+
+    private fun registerCommands() {
         val dispatcher = ClientCommandManager.DISPATCHER
 
         dispatcher.register(

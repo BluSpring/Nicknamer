@@ -1,23 +1,22 @@
-package xyz.bluspring.nicknamer
+package xyz.bluspring.nicknamer.config.pronouns
 
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
-import com.ibm.icu.lang.UCharacter
-import com.ibm.icu.util.ULocale
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.text.LiteralText
 import net.minecraft.text.Text
 import net.minecraft.text.TextColor
 import net.minecraft.text.Texts
 import net.minecraft.util.math.MathHelper
+import xyz.bluspring.nicknamer.Nicknamer
 import java.awt.Color
 import java.io.File
 import java.util.*
 import kotlin.random.Random
 
 object PronounManager {
-    private val file = File(FabricLoader.getInstance().configDir.toFile(), "nicknamer_pronouns.json")
+    private val file = File(Nicknamer.configDir, "pronouns.json")
     val pronouns = mutableMapOf<UUID, MutableList<String>>()
     val pronounColors = mutableMapOf<String, TextColor>()
     // This is something designed specifically for systems and genderfluid people.
@@ -26,8 +25,8 @@ object PronounManager {
 
     fun save() {
         if (!file.exists()) {
-            if (!FabricLoader.getInstance().configDir.toFile().exists())
-                FabricLoader.getInstance().configDir.toFile().mkdirs()
+            if (!Nicknamer.configDir.exists())
+                Nicknamer.configDir.mkdirs()
 
             file.createNewFile()
         }

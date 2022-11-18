@@ -7,7 +7,7 @@ import net.fabricmc.fabric.api.client.command.v1.FabricClientCommandSource
 import net.minecraft.text.LiteralText
 import net.minecraft.util.Formatting
 import xyz.bluspring.nicknamer.Nicknamer
-import xyz.bluspring.nicknamer.PronounManager
+import xyz.bluspring.nicknamer.config.pronouns.PronounManager
 
 class PronounsColorGetCommand<T : FabricClientCommandSource> : Command<T> {
     override fun run(context: CommandContext<T>): Int {
