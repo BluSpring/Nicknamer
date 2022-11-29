@@ -69,7 +69,7 @@ class Nicknamer : ModInitializer {
 
             val nameFormat = NameFormat.getNameFormat(hasNickname, hasPronouns)
 
-            return formatStringAsText(
+            val formatted = formatStringAsText(
                 config[nameFormat] ?: "%username%",
                 mutableMapOf(
                     "%username%" to displayName
@@ -81,6 +81,12 @@ class Nicknamer : ModInitializer {
                         this["%pronouns%"] = PronounManager.getPronounsText(profile.id)
                 }
             )
+
+            val player = MinecraftClient.getInstance().networkHandler?.getPlayerListEntry(profile.id)
+
+            return if (player != null && player.scoreboardTeam != null) {
+                player.scoreboardTeam!!.decorateName(formatted)
+            } else formatted
         }
 
         fun toTitleCase(str: String): String {
