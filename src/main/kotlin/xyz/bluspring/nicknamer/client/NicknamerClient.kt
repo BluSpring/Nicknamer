@@ -1,9 +1,11 @@
 package xyz.bluspring.nicknamer.client
 
+import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.arguments.StringArgumentType
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
+import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.command.argument.TextArgumentType
 import xyz.bluspring.nicknamer.commands.nick.*
 import xyz.bluspring.nicknamer.commands.pronouns.PronounsGetCommand
@@ -16,14 +18,12 @@ import xyz.bluspring.nicknamer.config.pronouns.PronounManager
 
 class NicknamerClient : ClientModInitializer {
     override fun onInitializeClient() {
-        ClientCommandRegistrationCallback.EVENT.register { _, _ ->
-            registerCommands()
+        ClientCommandRegistrationCallback.EVENT.register { it, _ ->
+            registerCommands(it)
         }
     }
 
-    private fun registerCommands() {
-        val dispatcher = ClientCommandManager.getActiveDispatcher() ?: return
-
+    private fun registerCommands(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
         dispatcher.register(
             ClientCommandManager
                 .literal("nickc")
