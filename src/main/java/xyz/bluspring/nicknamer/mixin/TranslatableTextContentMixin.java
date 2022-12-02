@@ -10,7 +10,8 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import xyz.bluspring.nicknamer.config.nickname.NicknameManager;
+import xyz.bluspring.nicknamer.Nicknamer;
+import xyz.bluspring.nicknamer.config.ConfigManager;
 
 @Mixin(TranslatableTextContent.class)
 public class TranslatableTextContentMixin {
@@ -39,7 +40,7 @@ public class TranslatableTextContentMixin {
         if (player == null)
             return;
 
-        var nickname = NicknameManager.INSTANCE.getOrDefault(player.getProfile().getId(), (Text) cir.getReturnValue());
+        var nickname = Nicknamer.Companion.setText(player.getProfile(), ConfigManager.INSTANCE.getConfig().getChatFormat(), (Text) cir.getReturnValue());
         cir.setReturnValue(nickname);
     }
 }
