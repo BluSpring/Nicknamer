@@ -105,6 +105,8 @@ object PronounManager {
                 )
             }
         }
+
+        Nicknamer.logger.info("Loaded ${pronouns.size} player pronouns, ${pronounColors.size} pronoun colours, ${pronounProfiles.size} profiles")
     }
 
     fun getOrDefault(id: UUID, name: Text): Text {

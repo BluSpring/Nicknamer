@@ -3,7 +3,7 @@ package xyz.bluspring.nicknamer.client
 import com.mojang.brigadier.arguments.StringArgumentType
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.minecraft.command.argument.TextArgumentType
 import xyz.bluspring.nicknamer.commands.nick.*
 import xyz.bluspring.nicknamer.commands.pronouns.PronounsGetCommand
@@ -16,7 +16,7 @@ import xyz.bluspring.nicknamer.config.pronouns.PronounManager
 
 class NicknamerClient : ClientModInitializer {
     override fun onInitializeClient() {
-        ClientPlayConnectionEvents.JOIN.register { _, _, _ ->
+        ClientCommandRegistrationCallback.EVENT.register { _, _ ->
             registerCommands()
         }
     }
