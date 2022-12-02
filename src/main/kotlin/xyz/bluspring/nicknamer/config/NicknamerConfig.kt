@@ -17,5 +17,12 @@ data class NicknamerConfig(
         NameFormat.NONE to "%username%",
     ),
 
+    var chatFormat: MutableMap<NameFormat, String> = mutableMapOf(
+        NameFormat.ALL to "%nickname% [%pronouns%]",
+        NameFormat.NO_PRONOUNS to "%nickname%",
+        NameFormat.NO_NICKNAME to "%username% [%pronouns%]",
+        NameFormat.NONE to "%username%",
+    ),
+
     var displayPronounsBelowUsername: Boolean = true
 )

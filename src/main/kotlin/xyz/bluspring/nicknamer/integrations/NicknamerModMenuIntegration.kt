@@ -90,6 +90,29 @@ class NicknamerModMenuIntegration : ModMenuApi {
                         )
                     }
                 }
+
+                getOrCreateCategory(Text.literal("Chat Format")).apply {
+                    setDescription(
+                        listOf(
+                            Text.literal("Sets what the name will look like in the chat."),
+                            Text.literal("%username% - Username"),
+                            Text.literal("%nickname% - Nickname"),
+                            Text.literal("%pronouns% - Pronouns")
+                        ).toTypedArray()
+                    )
+
+                    ConfigManager.config.chatFormat.forEach { (nameFormat, format) ->
+                        addEntry(
+                            entryBuilder()
+                                .startTextField(Text.literal(nameFormat.displayName), format)
+                                .setDefaultValue("%username% (%nickname%) - [%pronouns%]")
+                                .setSaveConsumer {
+                                    ConfigManager.config.chatFormat[nameFormat] = it
+                                }
+                                .build()
+                        )
+                    }
+                }
             }.build()
         }
     }

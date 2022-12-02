@@ -9,6 +9,17 @@ object ConfigManager {
     val config = NicknamerConfig()
     private val file = File(Nicknamer.configDir, "config.json")
 
+    private fun loadFormats(json: JsonObject, name: String, formatMap: MutableMap<NameFormat, String>) {
+        if (!json.has(name))
+            return
+
+        val inGameFormat = json.getAsJsonObject(name)
+
+        inGameFormat.entrySet().forEach { (key, element) ->
+            formatMap[NameFormat.valueOf(key)] = element.asString
+        }
+    }
+
     fun load() {
         if (!file.exists())
             return
@@ -18,18 +29,13 @@ object ConfigManager {
 
             config.enabled = json.get("enabled").asBoolean
             config.inGameFormat = mutableMapOf<NameFormat, String>().apply {
-                val inGameFormat = json.getAsJsonObject("inGameFormat")
-
-                inGameFormat.entrySet().forEach { (key, element) ->
-                    this[NameFormat.valueOf(key)] = element.asString
-                }
+                loadFormats(json, "inGameFormat", this)
             }
             config.playerListFormat = mutableMapOf<NameFormat, String>().apply {
-                val playerListFormat = json.getAsJsonObject("playerListFormat")
-
-                playerListFormat.entrySet().forEach { (key, element) ->
-                    this[NameFormat.valueOf(key)] = element.asString
-                }
+                loadFormats(json, "playerListFormat", this)
+            }
+            config.chatFormat = mutableMapOf<NameFormat, String>().apply {
+                loadFormats(json, "chatFormat", this)
             }
             config.displayPronounsBelowUsername = json.get("displayPronounsBelowUsername").asBoolean
         } catch (e: Exception) {
