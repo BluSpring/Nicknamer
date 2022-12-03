@@ -1,10 +1,12 @@
 package xyz.bluspring.nicknamer.mixin;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
 import net.minecraft.network.encryption.SignatureVerifier;
 import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -41,8 +43,21 @@ public abstract class PlayerListEntryMixin implements ExtendedPlayerListEntry {
 
         var pronounList = PronounDBIntegration.INSTANCE.getPronounsFromDatabase(playerListPacketEntry.getProfile());
 
-        if (!pronounList.isEmpty())
+        if (!pronounList.isEmpty()) {
             PronounManager.INSTANCE.getPronouns().put(playerListPacketEntry.getProfile().getId(), pronounList);
+            if (MinecraftClient.getInstance().player != null) {
+                MinecraftClient.getInstance().player.sendMessage(
+                        Text.literal("[Nicknamer] ").formatted(Formatting.AQUA)
+                                .append(
+                                        playerListPacketEntry.getDisplayName() == null
+                                                ? Text.literal(playerListPacketEntry.getProfile().getName())
+                                                : playerListPacketEntry.getDisplayName()
+                                )
+                                .append("'s pronouns have been set automatically via PronounDB to ")
+                                .append(PronounManager.INSTANCE.getPronounsText(pronounList))
+                );
+            }
+        }
     }
 
     @Inject(at = @At("RETURN"), method = "getDisplayName", cancellable = true)
