@@ -45,7 +45,7 @@ public abstract class PlayerListEntryMixin implements ExtendedPlayerListEntry {
 
         if (!pronounList.isEmpty()) {
             PronounManager.INSTANCE.getPronouns().put(playerListPacketEntry.getProfile().getId(), pronounList);
-            if (MinecraftClient.getInstance().player != null) {
+            if (MinecraftClient.getInstance().player != null && false) {
                 MinecraftClient.getInstance().player.sendMessage(
                         Text.literal("[Nicknamer] ").formatted(Formatting.AQUA)
                                 .append(
