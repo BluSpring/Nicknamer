@@ -109,18 +109,6 @@ object PronounManager {
         Nicknamer.logger.info("Loaded ${pronouns.size} player pronouns, ${pronounColors.size} pronoun colours, ${pronounProfiles.size} profiles")
     }
 
-    fun getOrDefault(id: UUID, name: Text): Text {
-        val pronounList = pronouns[id] ?: return name
-
-        return Text.literal("")
-            .append(name)
-            .append(" [")
-            .append(
-                getPronounsText(pronounList)
-            )
-            .append("]")
-    }
-
     fun getPronounsText(id: UUID): Text {
         val pronounList = pronouns[id] ?: return Text.empty()
         return getPronounsText(pronounList)
@@ -128,15 +116,19 @@ object PronounManager {
 
     fun getPronounsText(list: List<String>): Text {
         return Texts.join(
-            list.map { pronoun ->
-                Text.literal(
-                    Nicknamer.toTitleCase(pronoun)
-                ).styled {
-                    it.withColor(getOrCreatePronounColor(pronoun))
-                }
-            },
+            getPronounsTextList(list),
             Text.literal("/")
         )
+    }
+
+    fun getPronounsTextList(list: List<String>): List<Text> {
+        return list.map { pronoun ->
+            Text.literal(
+                Nicknamer.toTitleCase(pronoun)
+            ).styled {
+                it.withColor(getOrCreatePronounColor(pronoun))
+            }
+        }
     }
 
     fun getComplementaryPronounColor(pronoun: String): TextColor {

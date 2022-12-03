@@ -63,7 +63,7 @@ class Nicknamer : ModInitializer {
         }
 
         fun setText(profile: GameProfile, config: Map<NameFormat, String>, displayName: Text): Text {
-            val hasPronouns = PronounManager.pronouns.contains(profile.id)
+            val hasPronouns = PronounManager.pronouns.contains(profile.id) && PronounManager.pronouns[profile.id]!!.isNotEmpty()
             val hasNickname = !NicknameManager.isDisabled(profile.id)
 
             val nameFormat = NameFormat.getNameFormat(hasNickname, hasPronouns)
