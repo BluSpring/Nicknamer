@@ -5,7 +5,7 @@
 A client-side mod that allows you to add nicknames and pronouns to pretty much any player.
 
 ## Downloads
-[Modrinth](https://modrinth.com/mod/nicknamer)
+[Modrinth](https://modrinth.com/mod/nicknamer), [CurseForge](https://curseforge.com/minecraft/mc-mods/nicknamer)
 
 ## Required Mods
 [Fabric API](https://modrinth.com/mod/fabric-api), 
@@ -19,6 +19,7 @@ A client-side mod that allows you to add nicknames and pronouns to pretty much a
    - Designed specifically for roleplay characters and DID systems!
 - Setting nicknames using Minecraft's /tellraw format
 - Setting nicknames from what the player's current display name in Tab is
+- [PronounDB](https://pronoundb.org) support
 
 ## Commands
 Will be worked on soon.
