@@ -39,7 +39,10 @@ public class TranslatableTextContentMixin {
         )
             return;
 
-        var likelyPlayers = networkHandler.getPlayerList().stream().filter((entry) -> ((ExtendedPlayerListEntry) entry).getOriginalDisplayName().equals(cir.getReturnValue())).toList();
+        var likelyPlayers = networkHandler.getPlayerList().stream().filter((entry) ->
+                ((ExtendedPlayerListEntry) entry).getOriginalDisplayName() != null &&
+                ((ExtendedPlayerListEntry) entry).getOriginalDisplayName().equals(cir.getReturnValue())
+        ).toList();
         if (likelyPlayers.isEmpty())
             return;
 
