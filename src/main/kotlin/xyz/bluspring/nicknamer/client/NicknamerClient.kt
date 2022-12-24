@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
 import net.minecraft.command.argument.TextArgumentType
 import xyz.bluspring.nicknamer.commands.nick.*
 import xyz.bluspring.nicknamer.commands.pronouns.PronounsGetCommand
+import xyz.bluspring.nicknamer.commands.pronouns.PronounsRefreshCommand
 import xyz.bluspring.nicknamer.commands.pronouns.PronounsSetCommand
 import xyz.bluspring.nicknamer.commands.pronouns.color.PronounsColorComplimentCommand
 import xyz.bluspring.nicknamer.commands.pronouns.color.PronounsColorGetCommand
@@ -157,6 +158,11 @@ class NicknamerClient : ClientModInitializer {
                                         }
                                     }.buildFuture()
                                 }
+                                .then(
+                                    ClientCommandManager
+                                        .literal("refresh")
+                                        .executes(PronounsRefreshCommand())
+                                )
                                 .then(
                                     ClientCommandManager
                                         .literal("get")
