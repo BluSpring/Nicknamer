@@ -68,17 +68,20 @@ class Nicknamer : ModInitializer {
             val hasNickname = !NicknameManager.isDisabled(profile.id)
 
             val nameFormat = NameFormat.getNameFormat(hasNickname, hasPronouns)
+            val username: Text = LiteralText(profile.name)
 
             val formatted = formatStringAsText(
-                config[nameFormat] ?: "%username%",
+                config[nameFormat] ?: "%displayName%",
                 mutableMapOf(
-                    "%username%" to displayName
+                    "%username%" to username
                 ).apply {
                     if (hasNickname)
                         this["%nickname%"] = NicknameManager.nicknames[profile.id]!!
 
                     if (hasPronouns)
                         this["%pronouns%"] = PronounManager.getPronounsText(profile.id)
+
+                    this["%displayName%"] = displayName
                 }
             )
 

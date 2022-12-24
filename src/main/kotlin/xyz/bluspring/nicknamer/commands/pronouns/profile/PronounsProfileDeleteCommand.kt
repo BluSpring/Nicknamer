@@ -28,6 +28,7 @@ class PronounsProfileDeleteCommand<T : FabricClientCommandSource> : Command<T> {
         }
 
         PronounManager.pronounProfiles[playerUUID]!!.profiles.remove(profileName)
+        PronounManager.save()
         context.source.sendFeedback(LiteralText("Pronouns profile $profileName successfully deleted!"))
 
         return 1

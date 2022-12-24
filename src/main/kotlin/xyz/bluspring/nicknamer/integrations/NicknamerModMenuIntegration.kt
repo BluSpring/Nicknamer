@@ -51,7 +51,8 @@ class NicknamerModMenuIntegration : ModMenuApi {
                             LiteralText("Sets what the name will look like on the nameplate."),
                             LiteralText("%username% - Username"),
                             LiteralText("%nickname% - Nickname"),
-                            LiteralText("%pronouns% - Pronouns")
+                            LiteralText("%pronouns% - Pronouns"),
+                            LiteralText("%displayName% - Display Name")
                         ).toTypedArray()
                     )
 
@@ -74,7 +75,8 @@ class NicknamerModMenuIntegration : ModMenuApi {
                             LiteralText("Sets what the name will look like on the player list."),
                             LiteralText("%username% - Username"),
                             LiteralText("%nickname% - Nickname"),
-                            LiteralText("%pronouns% - Pronouns")
+                            LiteralText("%pronouns% - Pronouns"),
+                            LiteralText("%displayName% - Display Name")
                         ).toTypedArray()
                     )
 

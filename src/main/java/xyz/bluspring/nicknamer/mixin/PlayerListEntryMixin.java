@@ -15,6 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.bluspring.nicknamer.Nicknamer;
 import xyz.bluspring.nicknamer.config.ConfigManager;
 import xyz.bluspring.nicknamer.config.nickname.NicknameManager;
+import xyz.bluspring.nicknamer.config.pronouns.PronounManager;
 import xyz.bluspring.nicknamer.duck.ExtendedPlayerListEntry;
 
 @Mixin(PlayerListEntry.class)
@@ -31,7 +32,7 @@ public abstract class PlayerListEntryMixin implements ExtendedPlayerListEntry {
 
     @Inject(at = @At("RETURN"), method = "getDisplayName", cancellable = true)
     public void replaceDisplayName(CallbackInfoReturnable<Text> cir) {
-        if (!NicknameManager.INSTANCE.isDisabled(this.profile.getId())) {
+        if (!NicknameManager.INSTANCE.isDisabled(this.profile.getId()) || PronounManager.INSTANCE.getPronouns().containsKey(this.profile.getId())) {
             cir.setReturnValue(
                     Nicknamer.Companion.setText(
                             this.profile,
