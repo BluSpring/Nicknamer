@@ -40,6 +40,8 @@ class PronounsProfileSetCommand<T : FabricClientCommandSource> : Command<T> {
 
         PronounManager.pronouns[playerUUID] = profile
 
+        PronounManager.save()
+
         context.source.sendFeedback(
             Text.literal("Successfully set $playerName's pronouns profile to $profileName with the pronouns ")
                 .append(PronounManager.getPronounsText(profile))

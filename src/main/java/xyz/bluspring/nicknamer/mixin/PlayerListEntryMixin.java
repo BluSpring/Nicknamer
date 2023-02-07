@@ -36,16 +36,16 @@ public abstract class PlayerListEntryMixin implements ExtendedPlayerListEntry {
     }
 
     @Inject(at = @At("TAIL"), method = "<init>")
-    public void tryLoadPronounDB(PlayerListS2CPacket.Entry playerListPacketEntry, SignatureVerifier servicesSignatureVerifier, boolean secureChatEnforced, CallbackInfo ci) {
+    public void tryLoadPronounDB(GameProfile profile, boolean secureChatEnforced, CallbackInfo ci) {
         // Don't overwrite pronouns
-        if (PronounManager.INSTANCE.getPronouns().containsKey(playerListPacketEntry.getProfile().getId()))
+        if (PronounManager.INSTANCE.getPronouns().containsKey(profile.getId()))
             return;
 
-        var pronounList = PronounDBIntegration.INSTANCE.getPronounsFromDatabase(playerListPacketEntry.getProfile());
+        var pronounList = PronounDBIntegration.INSTANCE.getPronounsFromDatabase(profile);
 
         if (!pronounList.isEmpty()) {
-            PronounManager.INSTANCE.getPronouns().put(playerListPacketEntry.getProfile().getId(), pronounList);
-            if (MinecraftClient.getInstance().player != null && false) {
+            PronounManager.INSTANCE.getPronouns().put(profile.getId(), pronounList);
+            /*if (MinecraftClient.getInstance().player != null && false) {
                 MinecraftClient.getInstance().player.sendMessage(
                         Text.literal("[Nicknamer] ").formatted(Formatting.AQUA)
                                 .append(
@@ -56,13 +56,13 @@ public abstract class PlayerListEntryMixin implements ExtendedPlayerListEntry {
                                 .append("'s pronouns have been set automatically via PronounDB to ")
                                 .append(PronounManager.INSTANCE.getPronounsText(pronounList))
                 );
-            }
+            }*/
         }
     }
 
     @Inject(at = @At("RETURN"), method = "getDisplayName", cancellable = true)
     public void replaceDisplayName(CallbackInfoReturnable<Text> cir) {
-        if (!NicknameManager.INSTANCE.isDisabled(this.profile.getId())) {
+        if (!NicknameManager.INSTANCE.isDisabled(this.profile.getId()) || PronounManager.INSTANCE.getPronouns().containsKey(this.profile.getId())) {
             cir.setReturnValue(
                     Nicknamer.Companion.setText(
                             this.profile,
