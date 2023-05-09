@@ -15,7 +15,7 @@ class PronounsColorSetCommand<T : FabricClientCommandSource> : Command<T> {
         val pronoun = StringArgumentType.getString(context, "pronoun")
         val color = StringArgumentType.getString(context, "hex")
 
-        val textColor = TextColor.parse(color)
+        val textColor = TextColor.parse("#$color")
 
         if (textColor == null) {
             context.source.sendError(Text.literal("The color given is invalid!").formatted(Formatting.RED))
