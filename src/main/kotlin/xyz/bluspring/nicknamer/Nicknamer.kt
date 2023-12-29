@@ -4,7 +4,7 @@ import com.google.gson.JsonParser
 import com.ibm.icu.lang.UCharacter
 import com.ibm.icu.util.ULocale
 import com.mojang.authlib.GameProfile
-import com.mojang.util.UUIDTypeAdapter
+import com.mojang.util.UndashedUuid
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.MinecraftClient
@@ -18,7 +18,7 @@ import xyz.bluspring.nicknamer.config.nickname.NicknameManager
 import xyz.bluspring.nicknamer.config.pronouns.PronounManager
 import java.io.File
 import java.net.URL
-import java.util.UUID
+import java.util.*
 
 class Nicknamer : ModInitializer {
     override fun onInitialize() {
@@ -105,7 +105,7 @@ class Nicknamer : ModInitializer {
                     val response = URL("https://api.mojang.com/users/profiles/minecraft/$name").readText()
                     val json = JsonParser.parseString(response).asJsonObject
 
-                    val uuid = UUIDTypeAdapter.fromString(json.get("id").asString)
+                    val uuid = UndashedUuid.fromString(json.get("id").asString)
 
                     uuid
                 } catch (e: Exception) {
