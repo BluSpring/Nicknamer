@@ -5,8 +5,8 @@ data class NicknamerConfig(
 
     var playerListFormat: MutableMap<NameFormat, String> = mutableMapOf(
         NameFormat.ALL to "%username% (%nickname%) - [%pronouns%]",
-        NameFormat.NO_NICKNAME to "%username% - [%pronouns%]",
         NameFormat.NO_PRONOUNS to "%username% (%nickname%)",
+        NameFormat.NO_NICKNAME to "%username% - [%pronouns%]",
         NameFormat.NONE to "%username%"
     ),
 

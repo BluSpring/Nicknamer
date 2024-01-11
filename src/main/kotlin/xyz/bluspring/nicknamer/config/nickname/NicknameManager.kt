@@ -27,7 +27,7 @@ object NicknameManager/*(val pathName: String)*/ {
 
         json.add("nicknames", JsonObject().apply {
             nicknames.forEach { (uuid, text) ->
-                addProperty(uuid.toString(), Text.Serializer.toJson(text))
+                addProperty(uuid.toString(), Text.Serialization.toJsonString(text))
             }
         })
 
@@ -48,7 +48,7 @@ object NicknameManager/*(val pathName: String)*/ {
 
         json.getAsJsonObject("nicknames").apply {
             entrySet().forEach { (uuid, text) ->
-                nicknames[UUID.fromString(uuid)] = Text.Serializer.fromJson(text.asString) ?: Text.of("no load")
+                nicknames[UUID.fromString(uuid)] = Text.Serialization.fromJson(text.asString) ?: Text.of("no load")
             }
         }
 
