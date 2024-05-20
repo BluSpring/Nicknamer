@@ -24,6 +24,7 @@ class PronounsColorSetCommand<T : FabricClientCommandSource> : Command<T> {
         }
 
         PronounManager.pronounColors[pronoun] = textColor
+        PronounManager.save()
         context.source.sendFeedback(
             Text.literal("Set pronoun color to ")
                 .append(

@@ -10,6 +10,7 @@ import net.minecraft.command.argument.TextArgumentType
 import xyz.bluspring.nicknamer.commands.nick.*
 import xyz.bluspring.nicknamer.commands.pronouns.PronounsGetCommand
 import xyz.bluspring.nicknamer.commands.pronouns.PronounsRefreshCommand
+import xyz.bluspring.nicknamer.commands.pronouns.PronounsResetCommand
 import xyz.bluspring.nicknamer.commands.pronouns.PronounsSetCommand
 import xyz.bluspring.nicknamer.commands.pronouns.color.PronounsColorComplimentCommand
 import xyz.bluspring.nicknamer.commands.pronouns.color.PronounsColorGetCommand
@@ -167,6 +168,11 @@ class NicknamerClient : ClientModInitializer {
                                     ClientCommandManager
                                         .literal("get")
                                         .executes(PronounsGetCommand())
+                                )
+                                .then(
+                                    ClientCommandManager
+                                        .literal("reset")
+                                        .executes(PronounsResetCommand())
                                 )
                                 .then(
                                     ClientCommandManager
