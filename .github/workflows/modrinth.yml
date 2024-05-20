@@ -36,3 +36,5 @@ jobs:
             ${{ runner.os }}-gradle-
       - name: Build artifacts
         run: ./gradlew modrinth
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
