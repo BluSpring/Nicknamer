@@ -27,7 +27,6 @@ class PronounsProfileCreateCommand<T : FabricClientCommandSource> : Command<T> {
         profiles.currentProfile = profileName
 
         PronounManager.pronounProfiles[playerUUID] = profiles
-
         PronounManager.save()
 
         context.source.sendFeedback(
