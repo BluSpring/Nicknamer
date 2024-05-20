@@ -30,8 +30,8 @@
   "depends": {
     "fabricloader": ">=0.14.9",
     "fabric": "*",
-    "minecraft": ">=1.20.3",
+    "minecraft": ">=1.20.5",
     "fabric-language-kotlin": "*",
-    "cloth-config": ">=13"
+    "cloth-config": ">=14"
   }
 }

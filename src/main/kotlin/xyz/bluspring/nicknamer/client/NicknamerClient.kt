@@ -6,6 +6,7 @@ import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource
+import net.minecraft.command.CommandRegistryAccess
 import net.minecraft.command.argument.TextArgumentType
 import xyz.bluspring.nicknamer.commands.nick.*
 import xyz.bluspring.nicknamer.commands.pronouns.PronounsGetCommand
@@ -20,12 +21,12 @@ import xyz.bluspring.nicknamer.config.pronouns.PronounManager
 
 class NicknamerClient : ClientModInitializer {
     override fun onInitializeClient() {
-        ClientCommandRegistrationCallback.EVENT.register { it, _ ->
-            registerCommands(it)
+        ClientCommandRegistrationCallback.EVENT.register { it, registryAccess ->
+            registerCommands(it, registryAccess)
         }
     }
 
-    private fun registerCommands(dispatcher: CommandDispatcher<FabricClientCommandSource>) {
+    private fun registerCommands(dispatcher: CommandDispatcher<FabricClientCommandSource>, registryAccess: CommandRegistryAccess) {
         dispatcher.register(
             ClientCommandManager
                 .literal("nickc")
@@ -58,7 +59,7 @@ class NicknamerClient : ClientModInitializer {
                                 .then(
                                     ClientCommandManager.argument(
                                         "nickname",
-                                        TextArgumentType.text()
+                                        TextArgumentType.text(registryAccess)
                                     )
                                         .executes(NickSetRawCommand())
                                 )

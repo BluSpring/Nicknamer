@@ -1,9 +1,9 @@
 package xyz.bluspring.nicknamer.config.nickname
 
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
+import com.google.gson.*
+import com.mojang.serialization.JsonOps
 import net.minecraft.text.Text
+import net.minecraft.text.TextCodecs
 import xyz.bluspring.nicknamer.Nicknamer
 import xyz.bluspring.nicknamer.config.ConfigManager
 import java.io.File
@@ -14,6 +14,10 @@ object NicknameManager/*(val pathName: String)*/ {
     private val file = File(Nicknamer.configDir, "nicknames.json")
     val nicknames = mutableMapOf<UUID, Text>()
     val disabled = mutableSetOf<UUID>()
+
+    private val GSON = GsonBuilder()
+        .disableHtmlEscaping()
+        .create()
 
     fun save() {
         if (!file.exists()) {
@@ -27,7 +31,7 @@ object NicknameManager/*(val pathName: String)*/ {
 
         json.add("nicknames", JsonObject().apply {
             nicknames.forEach { (uuid, text) ->
-                addProperty(uuid.toString(), Text.Serialization.toJsonString(text))
+                addProperty(uuid.toString(), GSON.toJson(TextCodecs.CODEC.encodeStart(JsonOps.INSTANCE, text).getOrThrow(::JsonParseException)))
             }
         })
 
@@ -48,7 +52,10 @@ object NicknameManager/*(val pathName: String)*/ {
 
         json.getAsJsonObject("nicknames").apply {
             entrySet().forEach { (uuid, text) ->
-                nicknames[UUID.fromString(uuid)] = Text.Serialization.fromJson(text.asString) ?: Text.of("no load")
+                nicknames[UUID.fromString(uuid)] = TextCodecs.CODEC.parse(
+                    JsonOps.INSTANCE,
+                    JsonParser.parseString(text.asString)
+                ).getOrThrow(::JsonParseException) ?: Text.of("no load")
             }
         }
 
