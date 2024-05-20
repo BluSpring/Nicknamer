@@ -29,6 +29,8 @@ class PronounsRefreshCommand<T : FabricClientCommandSource> : Command<T> {
             profiles.profiles[profiles.currentProfile] = PronounManager.pronouns[playerUUID]!!
         }
 
+        PronounManager.save()
+
         context.source.sendFeedback(
             Text.literal("Successfully set $playerName's pronouns from PronounDB to ")
                 .append(PronounManager.getPronounsText(playerUUID))
