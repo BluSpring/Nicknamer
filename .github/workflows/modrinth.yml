@@ -1,4 +1,9 @@
-name: Gradle CI
+name: Modrinth
+
+on:
+  release:
+    types:
+      - published
 
 permissions:
   contents: read
