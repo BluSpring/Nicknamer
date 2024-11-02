@@ -1,12 +1,9 @@
 package xyz.bluspring.nicknamer.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.authlib.GameProfile;
-import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
-import net.minecraft.network.encryption.SignatureVerifier;
-import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,7 +12,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import xyz.bluspring.nicknamer.Nicknamer;
 import xyz.bluspring.nicknamer.config.ConfigManager;
 import xyz.bluspring.nicknamer.config.nickname.NicknameManager;
@@ -60,16 +56,18 @@ public abstract class PlayerListEntryMixin implements ExtendedPlayerListEntry {
         }
     }
 
-    @Inject(at = @At("RETURN"), method = "getDisplayName", cancellable = true)
-    public void replaceDisplayName(CallbackInfoReturnable<Text> cir) {
+    @ModifyReturnValue(at = @At("RETURN"), method = "getDisplayName")
+    public Text replaceDisplayName(Text original) {
         if (!NicknameManager.INSTANCE.isDisabled(this.profile.getId()) || PronounManager.INSTANCE.getPronouns().containsKey(this.profile.getId())) {
-            cir.setReturnValue(
+            return
                     Nicknamer.Companion.setText(
                             this.profile,
                             ConfigManager.INSTANCE.getConfig().getPlayerListFormat(),
-                            cir.getReturnValue() != null ? cir.getReturnValue() : Text.literal(this.profile.getName())
+                            original != null ? original : Text.literal(this.profile.getName())
                     )
-            );
+            ;
         }
+
+        return original;
     }
 }

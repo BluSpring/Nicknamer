@@ -68,6 +68,12 @@ object ConfigManager {
                     }
                     add("playerListFormat", playerListFormat)
 
+                    val chatFormat = JsonObject()
+                    config.chatFormat.forEach { (formatType, format) ->
+                        playerListFormat.addProperty(formatType.name, format)
+                    }
+                    add("chatFormat", chatFormat)
+
                     addProperty("displayPronounsBelowUsername", config.displayPronounsBelowUsername)
                 }.toString()
             )
