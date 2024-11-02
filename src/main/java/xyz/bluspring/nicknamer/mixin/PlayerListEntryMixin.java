@@ -2,8 +2,12 @@ package xyz.bluspring.nicknamer.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.mojang.authlib.GameProfile;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.PlayerListEntry;
+import net.minecraft.network.encryption.SignatureVerifier;
+import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
