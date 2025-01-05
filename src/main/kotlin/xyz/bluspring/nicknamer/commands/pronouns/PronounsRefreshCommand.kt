@@ -21,8 +21,10 @@ class PronounsRefreshCommand<T : FabricClientCommandSource> : Command<T> {
             return 0
         }
 
-        val pronouns = PronounDBIntegration.getPronounsFromDatabase(GameProfile(playerUUID, playerName))
-        PronounManager.pronouns[playerUUID] = pronouns.toMutableList()
+        PronounDBIntegration.getPronounsFromDatabase(GameProfile(playerUUID, playerName))
+            .thenAccept { pronouns ->
+                PronounManager.pronouns[playerUUID] = pronouns.toMutableList()
+            }
 
         val profiles = PronounManager.pronounProfiles[playerUUID]
         if (profiles != null) {
