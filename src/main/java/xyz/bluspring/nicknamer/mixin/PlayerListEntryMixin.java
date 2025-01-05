@@ -37,23 +37,24 @@ public abstract class PlayerListEntryMixin implements ExtendedPlayerListEntry {
         if (PronounManager.INSTANCE.getPronouns().containsKey(profile.getId()))
             return;
 
-        var pronounList = PronounDBIntegration.INSTANCE.getPronounsFromDatabase(profile);
-
-        if (!pronounList.isEmpty()) {
-            PronounManager.INSTANCE.getPronouns().put(profile.getId(), pronounList);
-            /*if (MinecraftClient.getInstance().player != null && false) {
-                MinecraftClient.getInstance().player.sendMessage(
-                        Text.literal("[Nicknamer] ").formatted(Formatting.AQUA)
-                                .append(
-                                        playerListPacketEntry.getDisplayName() == null
-                                                ? Text.literal(playerListPacketEntry.getProfile().getName())
-                                                : playerListPacketEntry.getDisplayName()
-                                )
-                                .append("'s pronouns have been set automatically via PronounDB to ")
-                                .append(PronounManager.INSTANCE.getPronounsText(pronounList))
-                );
-            }*/
-        }
+        PronounDBIntegration.INSTANCE.getPronounsFromDatabase(profile)
+            .thenAccept(pronounList -> {
+                if (!pronounList.isEmpty()) {
+                    PronounManager.INSTANCE.getPronouns().put(profile.getId(), pronounList);
+                    /*if (MinecraftClient.getInstance().player != null && false) {
+                        MinecraftClient.getInstance().player.sendMessage(
+                                Text.literal("[Nicknamer] ").formatted(Formatting.AQUA)
+                                        .append(
+                                                playerListPacketEntry.getDisplayName() == null
+                                                        ? Text.literal(playerListPacketEntry.getProfile().getName())
+                                                        : playerListPacketEntry.getDisplayName()
+                                        )
+                                        .append("'s pronouns have been set automatically via PronounDB to ")
+                                        .append(PronounManager.INSTANCE.getPronounsText(pronounList))
+                        );
+                    }*/
+                }
+            });
     }
 
     @ModifyReturnValue(at = @At("RETURN"), method = "getDisplayName")
