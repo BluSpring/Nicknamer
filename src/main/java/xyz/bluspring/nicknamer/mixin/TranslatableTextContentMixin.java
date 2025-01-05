@@ -14,7 +14,7 @@ import xyz.bluspring.nicknamer.Nicknamer;
 import xyz.bluspring.nicknamer.config.ConfigManager;
 import xyz.bluspring.nicknamer.duck.ExtendedPlayerListEntry;
 
-@Mixin(TranslatableTextContent.class)
+@Mixin(value = TranslatableTextContent.class, priority = 1100)
 public class TranslatableTextContentMixin {
     @Shadow @Final private String key;
 
